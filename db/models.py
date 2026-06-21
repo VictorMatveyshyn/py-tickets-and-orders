@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -21,6 +23,12 @@ class Movie(models.Model):
     description = models.TextField()
     actors = models.ManyToManyField(to=Actor, related_name="movies")
     genres = models.ManyToManyField(to=Genre, related_name="movies")
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["title"]),
+        ]
+
 
     def __str__(self) -> str:
         return self.title
@@ -50,3 +58,16 @@ class MovieSession(models.Model):
 
     def __str__(self) -> str:
         return f"{self.movie.title} {str(self.show_time)}"
+
+class User(AbstractUser):
+    pass
+
+class Order(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+
+    class Meta:
+        sorted(["-created_at"])
+
+    def __str__(self) -> str:
+        return f"Order: {self.created_at.strftime("%Y-%m-%d %H:%M:%S")}"
