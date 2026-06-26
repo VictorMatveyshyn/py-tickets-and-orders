@@ -70,7 +70,7 @@ class Order(models.Model):
                              on_delete=models.CASCADE)
 
     class Meta:
-        sorted(["-created_at"])
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"Order: {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
