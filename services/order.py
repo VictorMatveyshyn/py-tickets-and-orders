@@ -8,7 +8,7 @@ from db.models import User, Order, Ticket
 def create_order(tickets: list[dict]) -> None:
     for ticket in tickets:
         user = get_user_model().objects.get(username=ticket["username"])
-        order = Order.objects.create(uswer=user)
+        order = Order.objects.create(user=user)
         date = ticket.get("created_at", None)
         if date:
             order.created_at = date
